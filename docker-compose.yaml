@@ -1,0 +1,43 @@
+services:
+  nginx:
+    container_name: "nginx"
+    build:
+      context: ./docker/nginx
+    depends_on:
+      - app
+    ports:
+      - 80:80
+    volumes:
+      - ./:/src
+
+  app:
+    container_name: "app"
+    build:
+      context: ./docker/app
+    depends_on:
+      - db
+    ports:
+      - 5173:5173
+    volumes:
+      - ./:/src
+      - /src/node_modules
+      - /src/vendor
+      - ./docker/app/php.ini:/usr/local/etc/php/php.ini
+
+  db:
+    image: mysql:8.0.37
+    container_name: "db"
+    volumes:
+      - ./docker/db:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=myapp
+    ports:
+      - 3306:3306
+
+  redis:
+    image: redis:alpine
+    container_name: "redis"
+    ports:
+      - 16379:6379
