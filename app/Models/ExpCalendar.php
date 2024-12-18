@@ -7,14 +7,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ExpCalendar extends Model
 {
-    protected $fillable = [
-        'skill_id',
-        'exp',
-        'created_at',
-    ];
+  protected $table = 'exp_calendars'; // テーブル名
+  protected $fillable = [
+    'skill_id',
+    'exp',
+    'created_at',
+  ];
 
-    public function skill(): BelongsTo
-    {
-        return $this->belongsTo(Skill::class);
-    }
+  public function skill(): BelongsTo
+  {
+    return $this->belongsTo(Skill::class);
+  }
 }
